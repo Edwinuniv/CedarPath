@@ -7,21 +7,30 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
+import androidx.room.Room
+import com.cedarpath.data.AppDatabase
+import com.cedarpath.data.TripRepository
+import com.cedarpath.ui.AppNavHost
 import com.cedarpath.ui.theme.CedarPathTheme
+import com.cedarpath.ui.trips.TripListViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        // Build the database, then the repository and ViewModel that use it.
+        val db = Room.databaseBuilder(this, AppDatabase::class.java, "cedarpath.db").build()
+        val viewModel = TripListViewModel(TripRepository(db.tripDao()))
+
         setContent {
             CedarPathTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
+                    CedarPathApp(
+                        viewModel = viewModel,
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
@@ -30,18 +39,9 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+// The whole app: one NavController given to the NavHost.
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    CedarPathTheme {
-        Greeting("Android")
-    }
+fun CedarPathApp(viewModel: TripListViewModel, modifier: Modifier = Modifier) {
+    val navController = rememberNavController()
+    AppNavHost(navController = navController, viewModel = viewModel, modifier = modifier)
 }
