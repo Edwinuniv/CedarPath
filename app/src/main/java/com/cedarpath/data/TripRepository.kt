@@ -8,4 +8,6 @@ class TripRepository(private val dao: TripDao) {
     val upcomingTrips: Flow<List<Trip>> = dao.getUpcomingTrips()
 
     suspend fun addTrip(trip: Trip) = dao.insert(trip)
+
+    fun tripById(id: Int): Flow<Trip?> = dao.getTripById(id)
 }
