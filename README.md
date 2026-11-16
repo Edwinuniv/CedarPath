@@ -13,6 +13,10 @@ Team: Edwin Mouawad and Joe Boukaram.
 - **Trip detail and checklist** (Joe): open a trip, add packing items and tick them off.
 - Everything is saved in a local Room database, so trips and ticked items are still there after the app restarts.
 
+| First start | New trip | Upcoming trips | Packing checklist |
+|---|---|---|---|
+| <img src="docs/screenshots/01-empty-list.png" width="200"> | <img src="docs/screenshots/02-form-filled.png" width="200"> | <img src="docs/screenshots/03-trip-list.png" width="200"> | <img src="docs/screenshots/05-detail-checklist.png" width="200"> |
+
 ## How it is built
 
 - **UI:** Jetpack Compose with Material 3 (`ui/trips`, `ui/detail`)
